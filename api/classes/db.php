@@ -1,7 +1,12 @@
 <?php
 
+// Database Method to access local db
+// Author: Rajas Gadgil
+
 class Database
 {
+    //private credentials variables
+
     private $servername = "127.0.0.1:8889";
     private $username = "root";
     private $password = "root";
@@ -12,15 +17,14 @@ class Database
     {
         try {
             $this->conn = new PDO("mysql:host=$this->servername;dbname=$this->database", $this->username, $this->password);
-            // set the PDO error mode to exception
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            // echo "Connected successfully";
+            // echo "db connected";
         } catch (PDOException $e) {
-            // echo "Connection failed: " . $e->getMessage();
             throw new Exception("Connection failed: " . $e->getMessage());
         }
     }
+
+    // user login function
 
     public function userlogin($loginuser, $loginpass)
     {
@@ -31,7 +35,14 @@ class Database
                 $getpassword->execute();
                 $checkuserpassword = $getpassword->fetchAll(PDO::FETCH_ASSOC);
                 if ($checkuserpassword) {
+
+                    //password_verify function to verify password_hash values using one way encryption (bcrypt)
+
                     if (password_verify($loginpass, $checkuserpassword[0]['password'])) {
+
+
+                        // JOIN user and string length storing tables 
+
                         $stmt = $this->conn->prepare("SELECT kc.id, kc.firstname, kc.lastname, kst.string_length FROM kcl_user AS kc LEFT JOIN kcl_stringtask AS kst ON kst.userid = kc.id WHERE kc.id = :userid");
                         $stmt->bindParam(':userid', $checkuserpassword[0]['userid']);
                         $stmt->execute();
@@ -63,6 +74,8 @@ class Database
         }
     }
 
+    // function to store string values if user has logged in
+
     public function setStringValue($userid, $stringcount, $string)
     {
         if ($this->conn) {
@@ -72,42 +85,42 @@ class Database
             $getstringdata->bindParam('userid', $userid);
             $getstringdata->execute();
             $userstringdata = $getstringdata->fetchAll(PDO::FETCH_ASSOC);
-    
-                $condition = (count($userstringdata) == 0) ? 0 : 1;
-                switch ($condition) {
-                    case 0:
-                        $storestring = $this->conn->prepare("INSERT INTO kcl_stringtask 
-                        (userid,
-                        string_input,
-                        string_length,
-                        created_on) VALUES 
-                        (:userid,
-                        :string_input,
-                        :string_length,
-                        :created_on)");
-                        $storestring->bindParam(':userid', $userid);
-                        $storestring->bindParam(':string_input', $string);
-                        $storestring->bindParam(':string_length', $stringcount);
-                        $storestring->bindParam(':created_on', $current_time);
-                        $storestring->execute();
-                        break;
-    
-                    case 1:
-                        $updatestring = $this->conn->prepare("UPDATE kcl_stringtask 
-                        SET userid = :userid,
-                        string_input = :string_input,
-                        string_length = :string_length, 
-                        created_on = :created_on
-                        WHERE userid = :userid");
-                        $updatestring->bindParam(':userid', $userid);
-                        $updatestring->bindParam(':string_input', $string);
-                        $updatestring->bindParam(':string_length', $stringcount);
-                        $updatestring->bindParam(':created_on', $current_time);
-                        $updatestring->execute();
-                        break;
-                }
-            
-           
+            if (count($userstringdata) > 0) {
+
+                //insert string length values for user
+
+                $storestring = $this->conn->prepare("INSERT INTO kcl_stringtask 
+                (userid,
+                string_input,
+                string_length,
+                created_on) VALUES 
+                (:userid,
+                :string_input,
+                :string_length,
+                :created_on)");
+                $storestring->bindParam(':userid', $userid);
+                $storestring->bindParam(':string_input', $string);
+                $storestring->bindParam(':string_length', $stringcount);
+                $storestring->bindParam(':created_on', $current_time);
+                $storestring->execute();
+
+            } else {
+
+                //update string value if user data already present
+
+                $updatestring = $this->conn->prepare("UPDATE kcl_stringtask 
+                SET userid = :userid,
+                string_input = :string_input,
+                string_length = :string_length, 
+                created_on = :created_on
+                WHERE userid = :userid");
+                $updatestring->bindParam(':userid', $userid);
+                $updatestring->bindParam(':string_input', $string);
+                $updatestring->bindParam(':string_length', $stringcount);
+                $updatestring->bindParam(':created_on', $current_time);
+                $updatestring->execute();
+
+            }
         } else {
             throw new Exception("No database connection.");
         }

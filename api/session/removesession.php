@@ -1,4 +1,8 @@
 <?php
+
+// REST API to clear session on logout request 
+// Author: Rajas Gadgil
+
 session_start();
 
 header('Access-Control-Allow-Credentials: true');
@@ -10,4 +14,16 @@ header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Conte
 
 require __DIR__."./../classes/db.php";
 
-session_destroy();
+if (isset($_SESSION)) {
+
+    // if session is present delete the session
+
+    session_destroy();
+
+    print(json_encode(["message"=>"Session deleted"]));
+
+} else {
+
+    print(json_encode(["message"=>"No session found"]));
+
+}

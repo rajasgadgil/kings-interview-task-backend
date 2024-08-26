@@ -1,4 +1,8 @@
 <?php
+
+// REST API PHP for storing string value of user if user has logged in
+// Author: Rajas Gadgil
+
 session_start();
 
 header('Access-Control-Allow-Credentials: true');
@@ -26,5 +30,5 @@ if($string_length){
     print(json_encode(['message'=>$string_length]));
 
 }else{
-    print("Please enter a number");
+    print(json_encode(['message'=>"Please enter a number"]));
 }

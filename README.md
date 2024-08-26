@@ -42,4 +42,14 @@ kingsinterview.sql is the sql backup of local database
 
 Host name of front-end/request should be set to 127.0.0.1 to avoid CORS and browser restrictions while requesting APIs from this server
 
+User credentials for testing:
+
+USER 1:
+username: rajas
+password: Password123!
+
+USER 2:
+username: testfirstname
+password: Password123!
+
 This setup was created and tested using MAMP on MAC OS (not been tested on XAMPP/WAMP/DOCKER)

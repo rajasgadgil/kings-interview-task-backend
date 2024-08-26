@@ -36,6 +36,8 @@ Set server port is set to 8000
 
 Set HOST to 127.0.0.1
 
+Upload the folders and files to root directory
+
 kingsinterview.sql is the sql backup of local database
 
 Host name of front-end/request should be set to 127.0.0.1 to avoid CORS and browser restrictions while requesting APIs from this server

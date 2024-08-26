@@ -24,15 +24,19 @@ URL: http://127.0.0.1:8000/api/session/removesession.php
 
 APIs are standard REST APIs called using HTTP requests.
 
-# Sessions are used to store user data across the server
+Connections are made using PDO mysql for complete security
 
-The project MySQL Port is set to 8889
+Sessions are used to store user data across the server
 
-The project server port is set to 8000
+# Running the server
+
+Set MySQL Port to 8889
+
+Set server port is set to 8000
+
+Set HOST to 127.0.0.1
 
 kingsinterview.sql is the sql backup of local database
-
-Connections are made using PDO mysql for complete security
 
 Host name of front-end/request should be set to 127.0.0.1 to avoid CORS and browser restrictions while requesting APIs from this server
 

@@ -26,7 +26,7 @@ class Database
 
     // user login function
 
-    public function userlogin($loginuser, $loginpass)
+    public function UserLogin($loginuser, $loginpass)
     {
         if ($this->conn) {
             try {
@@ -86,6 +86,23 @@ class Database
             $getstringdata->execute();
             $userstringdata = $getstringdata->fetchAll(PDO::FETCH_ASSOC);
             if (count($userstringdata) > 0) {
+                
+                //update string value if user data already present
+
+                $updatestring = $this->conn->prepare("UPDATE kcl_stringtask 
+                SET userid = :userid,
+                string_input = :string_input,
+                string_length = :string_length, 
+                created_on = :created_on
+                WHERE userid = :userid");
+                $updatestring->bindParam(':userid', $userid);
+                $updatestring->bindParam(':string_input', $string);
+                $updatestring->bindParam(':string_length', $stringcount);
+                $updatestring->bindParam(':created_on', $current_time);
+                $updatestring->execute();
+            
+
+            } else {
 
                 //insert string length values for user
 
@@ -104,21 +121,6 @@ class Database
                 $storestring->bindParam(':created_on', $current_time);
                 $storestring->execute();
 
-            } else {
-
-                //update string value if user data already present
-
-                $updatestring = $this->conn->prepare("UPDATE kcl_stringtask 
-                SET userid = :userid,
-                string_input = :string_input,
-                string_length = :string_length, 
-                created_on = :created_on
-                WHERE userid = :userid");
-                $updatestring->bindParam(':userid', $userid);
-                $updatestring->bindParam(':string_input', $string);
-                $updatestring->bindParam(':string_length', $stringcount);
-                $updatestring->bindParam(':created_on', $current_time);
-                $updatestring->execute();
 
             }
         } else {

@@ -12,14 +12,14 @@ URL: http://127.0.0.1:8000/api/submit/
 
 For TASK 2:
 
-http://127.0.0.1:8000/api/login/
+URL: http://127.0.0.1:8000/api/login/
 
 
 For BONUS TASK 3:
 
-http://127.0.0.1:8000/api/session/getsession.php
+URL: http://127.0.0.1:8000/api/session/getsession.php
 
-http://127.0.0.1:8000/api/session/removesession.php
+URL: http://127.0.0.1:8000/api/session/removesession.php
 
 
 APIs are standard REST APIs called using HTTP requests.

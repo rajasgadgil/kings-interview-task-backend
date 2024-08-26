@@ -34,7 +34,7 @@ class Database
                 $getpassword->bindParam(':username', $loginuser);
                 $getpassword->execute();
                 $checkuserpassword = $getpassword->fetchAll(PDO::FETCH_ASSOC);
-                if ($checkuserpassword) {
+                if (count($checkuserpassword) > 0) {
 
                     //password_verify function to verify password_hash values using one way encryption (bcrypt)
 

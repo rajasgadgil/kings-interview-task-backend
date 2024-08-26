@@ -17,4 +17,6 @@ kingsinterview.sql is the sql backup of local database
 
 Connections are made using PDO mysql for complete security
 
-# this setup was created and testing using MAMP on MAC OS (not been tested on XAMPP/WAMP/DOCKER)
+Host name is set to 127.0.0.1 to avoid CORS and browser restrictions while requesting APIs fromt this server
+
+# this setup was created and tested using MAMP on MAC OS (not been tested on XAMPP/WAMP/DOCKER)
